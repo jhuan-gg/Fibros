@@ -1,0 +1,115 @@
+.login-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
+  background: var(--color1);
+  padding: 0;
+  width: 100vw;
+  height: auto;
+}
+
+.login-form {
+  background: var(--color2);
+  padding: 2.5rem 2rem;
+  border-radius: 18px;
+  box-shadow: 0 10px 48px 0 rgba(99,47,83,0.18), 0 1.5px 8px 0 rgba(209,30,72,0.08);
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  max-width: 340px;
+  min-width: 0;
+  gap: 1.3rem;
+  border: 2px solid var(--color5);
+}
+
+.login-form h2 {
+  margin: 0 0 1.7rem 0;
+  color: var(--color5);
+  font-weight: 800;
+  font-size: 2.1rem;
+  text-align: center;
+  letter-spacing: 0.5px;
+  text-shadow: 0 2px 8px #fde6bd44;
+}
+
+.login-form input {
+  padding: 1.1em 1.2em;
+  border-radius: 8px;
+  border: 1.5px solid var(--color5);
+  background: var(--color1);
+  color: var(--color5);
+  font-size: 1.13em;
+  outline: none;
+  transition: border-color 0.2s, box-shadow 0.2s;
+  box-shadow: 0 1px 4px 0 #632f5322;
+}
+
+.login-form input:focus {
+  border-color: var(--color4);
+  box-shadow: 0 0 0 2px #d11e4833;
+}
+
+.login-form button {
+  background: linear-gradient(90deg, var(--color4) 0%, var(--color5) 100%);
+  color: var(--color1);
+  border: none;
+  border-radius: 8px;
+  padding: 1em 1.2em;
+  font-size: 1.18em;
+  font-weight: 700;
+  cursor: pointer;
+  transition: background 0.2s, transform 0.1s, box-shadow 0.2s, color 0.2s;
+  box-shadow: 0 2px 12px rgba(209,30,72,0.10);
+  margin-top: 0.5rem;
+}
+
+.login-form button:hover {
+  background: linear-gradient(90deg, var(--color5) 0%, var(--color4) 100%);
+  color: var(--color3);
+  transform: translateY(-2px) scale(1.04);
+  box-shadow: 0 4px 18px rgba(209,30,72,0.18);
+}
+
+.login-error {
+  color: var(--color1);
+  background: var(--color4);
+  border-radius: 4px;
+  padding: 0.5em 0.8em;
+  font-size: 1em;
+  text-align: center;
+  border: 1px solid #ff6b6b33;
+}
+
+/* Responsividade para telas menores */
+@media (max-width: 600px) {
+  .login-form {
+    padding: 1.2rem 0.5rem;
+    min-width: unset;
+    max-width: 95vw;
+    gap: 0.8rem;
+    border-radius: 12px;
+  }
+  .login-container {
+    padding: 0.5rem;
+    width: 100vw;
+    height: auto;
+  }
+  .login-form h2 {
+    font-size: 1.3rem;
+  }
+  .login-form input,
+  .login-form button {
+    font-size: 0.98em;
+    padding: 0.6em 0.7em;
+  }
+}
+    font-size: 1.3rem;
+  }
+  .login-form input,
+  .login-form button {
+    font-size: 0.98em;
+    padding: 0.6em 0.7em;
+  }
+}
