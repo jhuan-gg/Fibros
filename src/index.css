@@ -1,3 +1,6 @@
+/* Importa Montserrat do Google Fonts */
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;700;800&display=swap');
+
 :root {
   --color1: #fde6bd;
   --color2: #a1c5ab;
@@ -5,7 +8,7 @@
   --color4: #d11e48;
   --color5: #632f53;
 
-  font-family: system-ui, Avenir, Helvetica, Arial, sans-serif;
+  font-family: 'Montserrat', system-ui, Avenir, Helvetica, Arial, sans-serif;
   line-height: 1.5;
   font-weight: 400;
 
@@ -30,14 +33,11 @@ a:hover {
 
 body {
   margin: 0;
-  min-width: 320px;
-  min-height: 100vh;
   background: inherit;
   color: inherit;
-  font-family: inherit;
-
+  font-family: 'Montserrat', system-ui, Avenir, Helvetica, Arial, sans-serif;
   display: flex;
-  place-items: center;
+  align-items: center;
   justify-content: center;
 }
 
@@ -45,6 +45,7 @@ h1 {
   font-size: 3.2em;
   line-height: 1.1;
   color: var(--color5);
+  font-family: 'Montserrat', system-ui, Avenir, Helvetica, Arial, sans-serif;
 }
 
 button {
@@ -53,7 +54,7 @@ button {
   padding: 0.6em 1.2em;
   font-size: 1em;
   font-weight: 500;
-  font-family: inherit;
+  font-family: 'Montserrat', system-ui, Avenir, Helvetica, Arial, sans-serif;
   background-color: var(--color2);
   color: var(--color5);
   cursor: pointer;
