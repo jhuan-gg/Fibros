@@ -1,93 +1,151 @@
-import { useState } from 'react';
-import { NavLink, useLocation, useNavigate } from 'react-router-dom';
-// Lucide icons (https://lucide.dev/icons)
-import {
-  LayoutDashboard,
-  BarChart2,
-  Settings,
-  LogOut,
-  User,
-  Menu,
-  X,
-} from 'lucide-react';
+import { useState, useEffect, useRef } from 'react';
+import { NavLink, useNavigate, useLocation } from 'react-router-dom';
+import { LogOut, Menu } from 'lucide-react';
 import './Sidebar.css';
 
-const MENU = [
-  {
-    label: 'Dashboard',
-    path: '/principal',
-    icon: <LayoutDashboard size={22} />,
-  },
-  {
-    label: 'Relatórios',
-    path: '/relatorios',
-    icon: <BarChart2 size={22} />,
-  },
-  {
-    label: 'Configurações',
-    path: '/configuracoes',
-    icon: <Settings size={22} />,
-  },
-];
-
-export default function Sidebar({ onLogout }) {
+export default function Sidebar({ onLogout, ctoId }) {
   const [open, setOpen] = useState(false);
-  const location = useLocation();
+  const sidebarRef = useRef(null);
   const navigate = useNavigate();
+  const location = useLocation();
 
-  // Fecha sidebar ao navegar em mobile
-  const handleNav = (path) => {
-    navigate(path);
-    setOpen(false);
-  };
+  // Fecha sidebar ao clicar fora (mobile)
+  useEffect(() => {
+    if (!open) return;
+    function handleClick(e) {
+      if (sidebarRef.current && !sidebarRef.current.contains(e.target)) {
+        setOpen(false);
+      }
+    }
+    document.addEventListener('mousedown', handleClick);
+    return () => document.removeEventListener('mousedown', handleClick);
+  }, [open]);
 
-  // Responsivo: sidebar aberta em desktop, colapsável em mobile
+  // Fecha sidebar ao navegar (mobile)
+  useEffect(() => {
+    if (!open) return;
+    function handleRoute() {
+      setOpen(false);
+    }
+    window.addEventListener('popstate', handleRoute);
+    return () => window.removeEventListener('popstate', handleRoute);
+  }, [open]);
+
+  // Acessibilidade: fecha com ESC
+  useEffect(() => {
+    if (!open) return;
+    function handleEsc(e) {
+      if (e.key === 'Escape') setOpen(false);
+    }
+    window.addEventListener('keydown', handleEsc);
+    return () => window.removeEventListener('keydown', handleEsc);
+  }, [open]);
+
+  // Foca no primeiro link ao abrir (mobile)
+  useEffect(() => {
+    if (open && sidebarRef.current) {
+      const firstLink = sidebarRef.current.querySelector('a,button');
+      if (firstLink) firstLink.focus();
+    }
+  }, [open]);
+
+  // Título dinâmico para o cabeçalho mobile
+  function getMobileTitle() {
+    if (location.pathname.startsWith('/relatorios')) return 'Relatórios';
+    if (location.pathname.startsWith('/ctos/')) return 'Editar CTO';
+    if (location.pathname.startsWith('/principal')) return 'Dashboard';
+    return 'Fibros';
+  }
+
+  // Navegação de links
+  const navLinks = [
+    { to: '/principal', label: 'Dashboard', icon: <span className="sidebar-icon">🏠</span> },
+    { to: '/relatorios', label: 'Relatórios', icon: <span className="sidebar-icon">📊</span> },
+    ctoId && {
+      to: `/ctos/${ctoId}/editar`,
+      label: 'Editar CTO',
+      icon: <span className="sidebar-icon">🛠️</span>,
+    },
+  ].filter(Boolean);
+
+  // Renderização
   return (
     <>
-      {/* Overlay para mobile */}
+      {/* Cabeçalho mobile fixo com botão do menu */}
+      <div className="mobile-header">
+        <button
+          className="sidebar-hamburger"
+          aria-label={open ? "Fechar menu" : "Abrir menu"}
+          aria-expanded={open}
+          aria-controls="sidebar-drawer"
+          onClick={() => setOpen(v => !v)}
+          tabIndex={0}
+          type="button"
+        >
+          <Menu size={28} />
+        </button>
+        <span className="mobile-header-title">{getMobileTitle()}</span>
+      </div>
+
+      {/* Overlay escurecido */}
       <div
         className={`sidebar-overlay${open ? ' sidebar-overlay-active' : ''}`}
-        onClick={() => setOpen(false)}
-        tabIndex={-1}
+        tabIndex={open ? 0 : -1}
         aria-hidden={!open}
+        onClick={() => setOpen(false)}
+        style={{ display: open ? 'block' : 'none' }}
       />
-      {/* Botão hamburger mobile */}
-      <button
-        className="sidebar-hamburger"
-        onClick={() => setOpen(o => !o)}
-        aria-label={open ? "Fechar menu" : "Abrir menu"}
+
+      {/* Sidebar drawer */}
+      <nav
+        ref={sidebarRef}
+        id="sidebar-drawer"
+        className={`sidebar${open ? ' sidebar-open' : ''}`}
+        aria-label="Menu lateral"
+        tabIndex={-1}
+        style={{
+          left: open ? 0 : undefined,
+          transform: open ? 'translateX(0)' : undefined,
+        }}
       >
-        {open ? <X size={28} /> : <Menu size={28} />}
-      </button>
-      <aside className={`sidebar${open ? ' sidebar-open' : ''}`}>
         <div className="sidebar-top">
-          <div className="sidebar-logo">
+          <span className="sidebar-logo">
             <span className="fibros-logo">Fibros!</span>
-          </div>
+          </span>
         </div>
-        <nav className="sidebar-menu">
-          {MENU.map(item => (
+        <div className="sidebar-menu" role="menu">
+          {navLinks.map(link => (
             <NavLink
-              key={item.path}
-              to={item.path}
+              key={link.to}
+              to={link.to}
               className={({ isActive }) =>
                 'sidebar-link' + (isActive ? ' sidebar-link-active' : '')
               }
-              onClick={() => handleNav(item.path)}
               tabIndex={0}
+              onClick={() => setOpen(false)}
+              role="menuitem"
             >
-              <span className="sidebar-icon">{item.icon}</span>
-              <span className="sidebar-label">{item.label}</span>
+              {link.icon}
+              <span className="sidebar-label">{link.label}</span>
             </NavLink>
           ))}
-        </nav>
+        </div>
         <div className="sidebar-bottom">
-          <button className="sidebar-link sidebar-logout" onClick={onLogout}>
-            <span className="sidebar-icon"><LogOut size={22} /></span>
-            <span className="sidebar-label">Sair</span>
+          <button
+            className="sidebar-link sidebar-logout"
+            onClick={() => {
+              setOpen(false);
+              onLogout();
+              navigate('/');
+            }}
+            tabIndex={0}
+            role="menuitem"
+          >
+            <LogOut size={22} style={{ marginRight: 8 }} />
+            Sair
           </button>
         </div>
-      </aside>
+      </nav>
     </>
   );
 }

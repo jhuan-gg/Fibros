@@ -2,91 +2,145 @@
 @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;700;800&display=swap');
 
 :root {
-  --color1: #fde6bd;
-  --color2: #a1c5ab;
-  --color3: #f4dd51;
-  --color4: #d11e48;
-  --color5: #632f53;
+  /* Paleta clara */
+  --color-bg: #f7f7fa;
+  --color-bg-card: #fff;
+  --color-primary: #2d2d2d;
+  --color-secondary: #4b5563;
+  --color-accent: #2563eb;
+  --color-accent-hover: #1d4ed8;
+  --color-danger: #e11d48;
+  --color-success: #059669;
+  --color-border: #d1d5db;
+  --color-muted: #6b7280;
+  --color-link: #2563eb;
+  --color-link-hover: #1d4ed8;
+  --color-disabled: #e5e7eb;
+  --color-placeholder: #9ca3af;
+  --shadow: 0 2px 12px #0001;
 
-  font-family: 'Montserrat', system-ui, Avenir, Helvetica, Arial, sans-serif;
-  line-height: 1.5;
-  font-weight: 400;
-
-  color-scheme: light dark;
-  color: var(--color5);
-  background-color: var(--color1);
-
-  font-synthesis: none;
-  text-rendering: optimizeLegibility;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-}
-
-a {
-  font-weight: 500;
-  color: var(--color4);
-  text-decoration: inherit;
-}
-a:hover {
-  color: var(--color5);
-}
-
-body {
-  margin: 0;
-  background: inherit;
-  color: inherit;
-  font-family: 'Montserrat', system-ui, Avenir, Helvetica, Arial, sans-serif;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-h1 {
-  font-size: 3.2em;
-  line-height: 1.1;
-  color: var(--color5);
-  font-family: 'Montserrat', system-ui, Avenir, Helvetica, Arial, sans-serif;
-}
-
-button {
-  border-radius: 8px;
-  border: 1px solid transparent;
-  padding: 0.6em 1.2em;
-  font-size: 1em;
-  font-weight: 500;
-  font-family: 'Montserrat', system-ui, Avenir, Helvetica, Arial, sans-serif;
-  background-color: var(--color2);
-  color: var(--color5);
-  cursor: pointer;
-  transition: border-color 0.25s, background 0.2s, color 0.2s;
-}
-button:hover {
-  border-color: var(--color4);
-  background: var(--color3);
-  color: var(--color4);
-}
-button:focus,
-button:focus-visible {
-  outline: 4px auto -webkit-focus-ring-color;
+  --font-main: 'Montserrat', system-ui, Arial, sans-serif;
+  --transition: background 0.2s, color 0.2s, border-color 0.2s, box-shadow 0.2s;
 }
 
 @media (prefers-color-scheme: dark) {
   :root {
-    color: var(--color1);
-    background-color: var(--color5);
+    --color-bg: #181a1b;
+    --color-bg-card: #23272f;
+    --color-primary: #f3f4f6;
+    --color-secondary: #d1d5db;
+    --color-accent: #60a5fa;
+    --color-accent-hover: #2563eb;
+    --color-danger: #f87171;
+    --color-success: #34d399;
+    --color-border: #374151;
+    --color-muted: #9ca3af;
+    --color-link: #60a5fa;
+    --color-link-hover: #93c5fd;
+    --color-disabled: #374151;
+    --color-placeholder: #6b7280;
+    --shadow: 0 2px 12px #0003;
   }
-  a {
-    color: var(--color3);
-  }
-  a:hover {
-    color: var(--color4);
-  }
-  button {
-    background-color: var(--color4);
-    color: var(--color1);
-  }
-  button:hover {
-    background: var(--color3);
-    color: var(--color5);
-  }
+}
+
+html, body {
+  /* Remova o alinhamento centralizado que causa corte */
+  min-height: 100vh;
+  margin: 0;
+  padding: 0;
+  background: var(--color-bg);
+  color: var(--color-primary);
+  font-family: var(--font-main);
+  font-size: 16px;
+  line-height: 1.6;
+  transition: var(--transition);
+  /* NÃO coloque display: flex aqui! */
+}
+
+*, *::before, *::after {
+  box-sizing: border-box;
+}
+
+a {
+  color: var(--color-link);
+  text-decoration: underline;
+  transition: color 0.2s;
+}
+a:hover, a:focus {
+  color: var(--color-link-hover);
+  outline: none;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  color: var(--color-primary);
+  font-family: var(--font-main);
+  margin-top: 0;
+}
+
+button, input, select, textarea {
+  font-family: inherit;
+  font-size: 1rem;
+  transition: var(--transition);
+}
+
+button {
+  border-radius: 8px;
+  border: 1.5px solid var(--color-border);
+  padding: 0.6em 1.2em;
+  font-weight: 600;
+  background: var(--color-accent);
+  color: #fff;
+  cursor: pointer;
+  box-shadow: var(--shadow);
+  outline: none;
+}
+button:hover, button:focus {
+  background: var(--color-accent-hover);
+  border-color: var(--color-accent-hover);
+}
+button:disabled {
+  background: var(--color-disabled);
+  color: var(--color-muted);
+  cursor: not-allowed;
+  border-color: var(--color-border);
+}
+
+input, select, textarea {
+  border-radius: 8px;
+  border: 1.5px solid var(--color-border);
+  background: var(--color-bg-card);
+  color: var(--color-primary);
+  padding: 0.7em 1em;
+  outline: none;
+  margin-bottom: 0.5em;
+}
+input:focus, select:focus, textarea:focus {
+  border-color: var(--color-accent);
+  box-shadow: 0 0 0 2px var(--color-accent)33;
+}
+input::placeholder, textarea::placeholder {
+  color: var(--color-placeholder);
+  opacity: 1;
+}
+
+::-webkit-scrollbar {
+  width: 8px;
+  background: var(--color-bg);
+}
+::-webkit-scrollbar-thumb {
+  background: var(--color-border);
+  border-radius: 8px;
+}
+
+::selection {
+  background: var(--color-accent);
+  color: #fff;
+}
+
+#root {
+  min-height: 100vh;
+  width: 100vw;
+  background: var(--color-bg);
+  color: var(--color-primary);
+  /* NÃO coloque display: flex aqui! */
 }

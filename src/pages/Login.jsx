@@ -6,7 +6,7 @@ import { db } from '../firebase';
 import { collection, query, where, getDocs } from 'firebase/firestore';
 import './Login.css';
 
-export default function Login({ onLogin }) {
+export default function Login({ onLogin, setUsuario }) {
   const [emailOrUser, setEmailOrUser] = useState('');
   const [password, setPassword] = useState('');
   const [showPassword, setShowPassword] = useState(false);
@@ -30,6 +30,7 @@ export default function Login({ onLogin }) {
         // Usuário admin encontrado, verifica senha
         const userDoc = querySnapshot.docs[0].data();
         if (userDoc.senha === password) {
+          if (setUsuario) setUsuario(userDoc); // Salva usuário admin
           onLogin();
           navigate('/principal');
           return;
@@ -45,7 +46,8 @@ export default function Login({ onLogin }) {
 
     // 2. Se não for admin, tenta login normal pelo Auth
     try {
-      await signInWithEmailAndPassword(auth, emailOrUser, password);
+      const cred = await signInWithEmailAndPassword(auth, emailOrUser, password);
+      if (setUsuario) setUsuario(cred.user); // Salva usuário comum
       onLogin();
       navigate('/principal');
     } catch (err) {
@@ -62,6 +64,7 @@ export default function Login({ onLogin }) {
   };
 
   return (
+    <div className='login-container'>
     <form className="login-form" onSubmit={handleSubmit} autoComplete="on">
       <h2>
         Bem vindo a
@@ -103,5 +106,6 @@ export default function Login({ onLogin }) {
         © 2025 <span className="fibros-highlight" style={{fontSize: '1em'}}>Fibros!</span> Todos os direitos reservados.
       </div>
     </form>
+    </div>
   );
 }
